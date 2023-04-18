@@ -36,7 +36,9 @@ function Banner() {
       }}
     >
       <div className="banner_contents">
-        <h1 className="banner_title">{movie?.name}</h1>
+        <h1 className="banner_title">
+          {movie?.title || movie?.name || movie?.original_name}
+        </h1>
         <div className="banner_buttons">
           <button className="banner_button">play</button>
           <button className="banner_button">pause</button>
