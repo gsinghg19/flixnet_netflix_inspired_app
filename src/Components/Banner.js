@@ -2,6 +2,11 @@ import React from "react";
 import "./Banner.css";
 
 function Banner() {
+  //this truncate function will shorten movie descriptions when character lenght is too long.
+  function truncate(string, n) {
+    return string?.length > n ? string.substr(0, n - 1) + "..." : string;
+  }
+
   return (
     <header
       className="banner"
@@ -18,7 +23,16 @@ function Banner() {
           <button className="banner_button">pause</button>
         </div>
         <h1 className="banner_description">
-          This is where the film descriptions will go.
+          {truncate(
+            `This is a test for the truncate function,This is a test for the truncate function,
+                This is a test for the truncate function,This is a test for the truncate function,
+                This is a test for the truncate function,This is a test for the truncate function,
+                This is a test for the truncate function,This is a test for the truncate function,
+                This is a test for the truncate function,This is a test for the truncate function,
+                This is a test for the truncate function,This is a test for the truncate function,
+                This is a test for the truncate function,This is a test for the truncate function`,
+            150
+          )}
         </h1>
       </div>
       <div className="banner--faceBottom" />
