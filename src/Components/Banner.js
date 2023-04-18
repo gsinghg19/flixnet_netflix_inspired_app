@@ -1,7 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Banner.css";
+import axios from "../axios";
+import requests from "../requests";
 
 function Banner() {
+  const [movie, setmovie] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const request = await axios.get(requests.fetchNetflixOriginals);
+      setmovie(
+        request.data.results[
+          Math.floor(Math.random() * request.data.results.length - 1)
+        ]
+      );
+      return request;
+    }
+
+    fetchData();
+  }, []);
+  console.log("The movie data is: ----->", movie);
+
   //this truncate function will shorten movie descriptions when character lenght is too long.
   function truncate(string, n) {
     return string?.length > n ? string.substr(0, n - 1) + "..." : string;
