@@ -41,20 +41,10 @@ function Banner() {
         </h1>
         <div className="banner_buttons">
           <button className="banner_button">play</button>
-          <button className="banner_button">pause</button>
+          <button className="banner_button">Watch later</button>
+          <button className="banner_button">My Fav</button>
         </div>
-        <h1 className="banner_description">
-          {truncate(
-            `This is a test for the truncate function,This is a test for the truncate function,
-                This is a test for the truncate function,This is a test for the truncate function,
-                This is a test for the truncate function,This is a test for the truncate function,
-                This is a test for the truncate function,This is a test for the truncate function,
-                This is a test for the truncate function,This is a test for the truncate function,
-                This is a test for the truncate function,This is a test for the truncate function,
-                This is a test for the truncate function,This is a test for the truncate function`,
-            150
-          )}
-        </h1>
+        <h1 className="banner_description">{truncate(movie?.overview, 150)}</h1>
       </div>
       <div className="banner--faceBottom" />
     </header>
