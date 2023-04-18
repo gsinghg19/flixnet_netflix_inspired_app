@@ -31,12 +31,12 @@ function Banner() {
       className="banner"
       style={{
         backgroundSize: "cover",
-        /* this banner is a test image*/ backgroundImage: `url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Black_flag.svg/1200px-Black_flag.svg.png')`,
+        backgroundImage: `url('https://image.tmdb.org/t/p/original/${movie?.backdrop_path}')`,
         backgroundPosition: "center center",
       }}
     >
       <div className="banner_contents">
-        <h1 className="banner_title">Movie name here</h1>
+        <h1 className="banner_title">{movie?.name}</h1>
         <div className="banner_buttons">
           <button className="banner_button">play</button>
           <button className="banner_button">pause</button>
