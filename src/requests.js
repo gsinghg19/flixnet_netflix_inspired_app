@@ -14,3 +14,5 @@ const requests = {
   fetchTrendingAllDay: `/trending/all/day?api_key=${API_KEY}&language=en-US`,
   fetchUpcomingMovies: `/movie/upcoming?api_key=${API_KEY}&language=en-US&page=1`,
 };
+
+export default requests;
