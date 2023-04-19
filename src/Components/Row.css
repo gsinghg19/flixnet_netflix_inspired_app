@@ -28,3 +28,12 @@ transition: transform 450ms;
     transform: scale(1.08);
     opacity: 1;
 }
+
+.row_posterLarge {
+    max-height: 300px;
+}
+
+.row_posterLarge:hover {
+    transform: scale(1.09);
+    opacity: 1;
+}
