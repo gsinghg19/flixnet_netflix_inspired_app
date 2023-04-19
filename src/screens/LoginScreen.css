@@ -16,9 +16,12 @@ background-size: cover;
 
 .loginScreen_body {
     position: absolute;
+    left:0;
+    right:0;
     top: 30%;
     margin-left: auto;
     margin-right: auto;
+    text-align: center;
     z-index: 1;
     color: white;
     padding: 20px;
