@@ -30,7 +30,7 @@ transition: transform 450ms;
 }
 
 .row_posterLarge {
-    max-height: 300px;
+    max-height: 240px;
 }
 
 .row_posterLarge:hover {
