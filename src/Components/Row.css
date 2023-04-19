@@ -16,14 +16,15 @@
 display: none;
 }
 
-.row_poster:hover {
-    color:black;
-    background-color: white;
-    transition: all 0.3s;
-}
-
 .row_poster {
 max-height: 200px;
 object-fit: contain;
 margin-right: 10px;
+width:100%;
+transition: transform 450ms;
+}
+
+.row_poster:hover {
+    transform: scale(1.08);
+    opacity: 1;
 }
