@@ -14,3 +14,39 @@ flex-direction: column;
 .signUpScreen_Header {
     padding-bottom: 20px;
 }
+
+.signUpButton_Submit {
+    background-color: #e50914;
+    font-size: 1rem;
+    padding: 16px 20px;
+    color:white;
+    border: none;
+    border-radius: 5px;
+    font-weight:500;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.signUpButton_Submit:hover {
+    background-color: #e50914;
+    transition: all 0.3s;
+    opacity: 0.7;
+}
+
+.signUpScreen > form > input {
+    outline-width: 0;
+    height: 40px;
+    margin-bottom: 14px;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 15px;
+}
+
+.signUpScreen_gray {
+    color:gray;
+}
+
+.signUpScreen_link:hover {
+cursor: pointer;
+text-decoration: underline;
+}
