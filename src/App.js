@@ -4,17 +4,26 @@ import HomeScreen from "./screens/HomeScreen";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginScreen from "./screens/LoginScreen";
 import { auth } from "./firebase_handler";
+import { useDispatch } from "react-redux";
+import { login, logout } from "./features/counter/userSlice";
 
 function App() {
   const user = null;
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((userAuth) => {
       if (userAuth) {
         //Logged in state
-        console.log(userAuth);
+        dispatch(
+          login({
+            uid: userAuth.uid,
+            email: userAuth.email,
+          })
+        );
       } else {
         //Logged out state
+        dispatch(logout);
       }
     });
     return unsubscribe;
