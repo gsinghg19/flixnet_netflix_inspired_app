@@ -1,7 +1,10 @@
 import React, { useRef } from "react";
 import "./SignUpScreen.css";
 import { auth } from "../firebase_handler";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 
 function SignUpScreen() {
   const emailRef = useRef(null);
@@ -13,10 +16,11 @@ function SignUpScreen() {
       emailRef.current.value,
       passwordRef.current.value
     )
-      .then(() => {
+      .then((userCredential) => {
         // Signed in
         console.log(
-          "User registration is successful. Check firebase db for user details."
+          "User registration is successful. Check firebase db for user details.",
+          userCredential
         );
       })
       .catch((error) => {
@@ -27,6 +31,21 @@ function SignUpScreen() {
 
   const signIn = (e) => {
     e.preventDefault();
+
+    signInWithEmailAndPassword(
+      auth,
+      emailRef.current.value,
+      passwordRef.current.value
+    )
+      .then((userCredential) => {
+        console.log(
+          "User has signed in with user credentials successfully.",
+          userCredential
+        );
+      })
+      .catch((error) => {
+        alert.log(error);
+      });
   };
 
   return (
