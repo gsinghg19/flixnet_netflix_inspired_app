@@ -9,7 +9,7 @@ function App() {
   const user = null;
 
   useEffect(() => {
-    auth.onAuthStateChanged((userAuth) => {
+    const unsubscribe = auth.onAuthStateChanged((userAuth) => {
       if (userAuth) {
         //Logged in state
         console.log(userAuth);
@@ -17,6 +17,7 @@ function App() {
         //Logged out state
       }
     });
+    return unsubscribe;
   }, []);
 
   return (
