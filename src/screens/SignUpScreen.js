@@ -1,8 +1,27 @@
-import React from "react";
+import React, { useRef } from "react";
 import "./SignUpScreen.css";
+import { auth } from "../firebase_handler";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 function SignUpScreen() {
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+
   const register = (e) => {
+    createUserWithEmailAndPassword(
+      auth,
+      emailRef.current.value,
+      passwordRef.current.value
+    )
+      .then(() => {
+        // Signed in
+        console.log(
+          "User registration is successful. Check firebase db for user details."
+        );
+      })
+      .catch((error) => {
+        alert(error);
+      });
     e.preventDefault();
   };
 
@@ -14,8 +33,8 @@ function SignUpScreen() {
     <div className="signUpScreen">
       <form>
         <h1 className="signUpScreen_Header">Sign up here</h1>
-        <input placeholder="Email Address" type="email" />
-        <input placeholder="Password" type="Password" />
+        <input placeholder="Email Address" type="email" ref={emailRef} />
+        <input placeholder="Password" type="Password" ref={passwordRef} />
         <button className="signUpButton_Submit" type="submit" onClick={signIn}>
           Sign In
         </button>
