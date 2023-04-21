@@ -44,7 +44,7 @@ function SignUpScreen() {
         );
       })
       .catch((error) => {
-        alert.log(error);
+        alert(error);
       });
   };
 
