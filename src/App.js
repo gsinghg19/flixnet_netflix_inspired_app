@@ -24,11 +24,11 @@ function App() {
         );
       } else {
         //Logged out state
-        dispatch(logout);
+        dispatch(logout());
       }
     });
     return unsubscribe;
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="app">
