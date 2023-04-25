@@ -1,10 +1,22 @@
 import React, { useEffect, useState } from "react";
 import "./PlansScreen.css";
 import db from "../firebase_handler";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  onSnapshot,
+  query,
+  where,
+  addDoc,
+} from "firebase/firestore";
+import { useSelector } from "react-redux";
+import { selectUser } from "../features/counter/userSlice";
+import { loadStripe } from "@stripe/stripe-js";
 
 function PlansScreens() {
   const [products, setProducts] = useState([]);
+  const user = useSelector(selectUser);
+  const PUBLISH_KEY = process.env.REACT_APP_API_PUBLISH_TEST.KEY;
 
   useEffect(() => {
     const q = query(collection(db, "products"), where("active", "==", true)); //query cloudstore db for collections and subcollections.
@@ -27,12 +39,32 @@ function PlansScreens() {
 
   console.log("The products logged are: ", products);
 
-  const loadCheckOut = async (priceId) => {};
+  const loadCheckOut = async (priceId) => {
+    const docRef = await addDoc(
+      collection(db, "customers", user.uid, "checkout_sessions"),
+      {
+        price: priceId,
+        success_url: window.location.origin,
+        cancel_url: window.location.origin,
+      }
+    );
+    onSnapshot(docRef, async (snap) => {
+      const { error, sessionId } = snap.data();
+
+      if (error) {
+        alert(`An error has occured: ${error.message}`);
+      }
+
+      if (sessionId) {
+        const stripe = await loadStripe(PUBLISH_KEY);
+        stripe.redirectToCheckout({ sessionId });
+      }
+    });
+  };
 
   return (
     <div className="plansScreen">
       {Object.entries(products).map(([productId, productData]) => {
-        //TODO: add code to check if user has an active plan.
         return (
           <div className="plansScreen_plan">
             <div className="plansScreen_info">
