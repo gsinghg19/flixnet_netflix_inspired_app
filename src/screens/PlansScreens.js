@@ -1,28 +1,29 @@
 import React, { useEffect, useState } from "react";
 import "./PlansScreen.css";
 import db from "../firebase_handler";
-import { QuerySnapshot } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 
 function PlansScreens() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    db.collection("products")
-      .where("active", "==", true)
-      .get()
-      .then((querySnapShot) => {
-        const products = {};
-        querySnapShot.forEach(async (productDoc) => {
-          products[productDoc.id] = productDoc.data();
-          const priceSnap = await productDoc.ref.collection("prices").get();
-          priceSnap.docs.forEach((price) => {
-            products[productDoc.id].prices = {
-              priceId: price.id,
-              priceData: price.data(),
-            };
-          });
+    const q = query(collection(db, "products"), where("active", "==", true));
+    getDocs(q).then((querySnapShot) => {
+      const products = {};
+      querySnapShot.forEach(async (productDoc) => {
+        products[productDoc.id] = productDoc.data();
+        const pricesCollectionRef = collection(productDoc.ref, "prices");
+        const pricesQuerySnapshot = await getDocs(pricesCollectionRef);
+        pricesQuerySnapshot.forEach((priceDoc) => {
+          products[productDoc.id].prices = {
+            priceId: priceDoc.id,
+            priceData: priceDoc.data(),
+          };
         });
       });
+      console.log("The products logged are: ", products);
+      setProducts(products);
+    });
   }, []);
 
   return <div>PlansScreens</div>;
