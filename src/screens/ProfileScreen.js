@@ -28,7 +28,7 @@ function ProfileScreen() {
                 className="profileScreen_signout"
                 onClick={() => auth.signOut()}
               >
-                sign out
+                Sign out
               </button>
             </div>
           </div>
