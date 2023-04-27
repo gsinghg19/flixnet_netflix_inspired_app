@@ -15,8 +15,34 @@ import { loadStripe } from "@stripe/stripe-js";
 
 function PlansScreens() {
   const [products, setProducts] = useState([]);
+  const [subscription, setSubscription] = useState(null);
   const user = useSelector(selectUser);
   const PUBLISH_KEY = process.env.REACT_APP_API_PUBLISH_TEST.KEY;
+
+  useEffect(() => {
+    const docRef = collection(db, "customers", user.uid, "subscriptions");
+    getDocs(docRef).then((collSnapShot) => {
+      const subscription = {};
+      collSnapShot.forEach(async (customerDoc) => {
+        subscription[customerDoc.id] = customerDoc.data();
+        const subscriptionCollRef = collection(
+          customerDoc.ref,
+          "subscriptions"
+        );
+        const subQuerySnapShot = await getDocs(subscriptionCollRef);
+        subQuerySnapShot.forEach((subscriptionDoc) => {
+          setSubscription({
+            role: subscriptionDoc.data().role,
+            current_period_end:
+              subscriptionDoc.data().current_period_end.seconds,
+            current_period_start:
+              subscriptionDoc.data().current_period_start.seconds,
+          });
+        });
+      });
+      setSubscription(subscription);
+    });
+  }, [user.uid]);
 
   useEffect(() => {
     const q = query(collection(db, "products"), where("active", "==", true)); //query cloudstore db for collections and subcollections.
@@ -38,6 +64,7 @@ function PlansScreens() {
   }, []);
 
   console.log("The products logged are: ", products);
+  console.log("Subscription information is: ", subscription);
 
   const loadCheckOut = async (priceId) => {
     const docRef = await addDoc(
