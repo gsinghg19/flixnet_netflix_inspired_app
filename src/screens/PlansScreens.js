@@ -15,33 +15,24 @@ import { loadStripe } from "@stripe/stripe-js";
 
 function PlansScreens() {
   const [products, setProducts] = useState([]);
-  const [subscription, setSubscription] = useState(null);
+  const [subscriptions, setSubscriptions] = useState(null);
   const user = useSelector(selectUser);
   const PUBLISH_KEY = process.env.REACT_APP_API_PUBLISH_TEST.KEY;
 
   useEffect(() => {
-    const docRef = collection(db, "customers", user.uid, "subscriptions");
-    getDocs(docRef).then((collSnapShot) => {
-      const subscription = {};
-      collSnapShot.forEach(async (customerDoc) => {
-        subscription[customerDoc.id] = customerDoc.data();
-        const subscriptionCollRef = collection(
-          customerDoc.ref,
-          "subscriptions"
-        );
-        const subQuerySnapShot = await getDocs(subscriptionCollRef);
-        subQuerySnapShot.forEach((subscriptionDoc) => {
-          setSubscription({
-            role: subscriptionDoc.data().role,
-            current_period_end:
-              subscriptionDoc.data().current_period_end.seconds,
+    getDocs(collection(db, "customers", user.uid, "subscriptions")).then(
+      (querySnapshot) => {
+        querySnapshot.forEach(async (subscription) => {
+          setSubscriptions({
+            role: subscription.data().role,
+            status: subscription.data().status,
+            current_period_end: subscription.data().current_period_end.seconds,
             current_period_start:
-              subscriptionDoc.data().current_period_start.seconds,
+              subscription.data().current_period_start.seconds,
           });
         });
-      });
-      setSubscription(subscription);
-    });
+      }
+    );
   }, [user.uid]);
 
   useEffect(() => {
@@ -63,8 +54,8 @@ function PlansScreens() {
     });
   }, []);
 
-  console.log("The products logged are: ", products);
-  console.log("Subscription information is: ", subscription);
+  // console.log("The products logged are: ", products);
+  // console.log("Subscription information is: ", subscriptions);
 
   const loadCheckOut = async (priceId) => {
     const docRef = await addDoc(
@@ -92,8 +83,17 @@ function PlansScreens() {
   return (
     <div className="plansScreen">
       {Object.entries(products).map(([productId, productData]) => {
+        const isCurrentPackage = productData.name?.includes(
+          subscriptions?.role
+        );
+
         return (
-          <div className="plansScreen_plan">
+          <div
+            key={productId}
+            className={`${
+              isCurrentPackage && "plansScreen_plan--disabled"
+            } plansScreen_plan`}
+          >
             <div className="plansScreen_info">
               <h5>{productData.name}</h5>
               <h6>{productData.description}</h6>
@@ -101,10 +101,10 @@ function PlansScreens() {
             <button
               className="PlansScreen_subBtn"
               onClick={() => {
-                loadCheckOut(productData.prices.priceId);
+                !isCurrentPackage && loadCheckOut(productData.prices.priceId);
               }}
             >
-              Subscribe
+              {isCurrentPackage ? "Current Package" : "Subscribe"}
             </button>
           </div>
         );
