@@ -9,6 +9,7 @@ const firebaseConfig = {
   storageBucket: "netflix-clone-d1b0c.appspot.com",
   messagingSenderId: "899125445916",
   appId: "1:899125445916:web:4407ac8f90d90920f5a6d9",
+  measurementId: "G-BNY8WRXBEF",
 };
 
 // Initialize Firebase
