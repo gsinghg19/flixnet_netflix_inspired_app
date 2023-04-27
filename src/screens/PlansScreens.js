@@ -82,6 +82,14 @@ function PlansScreens() {
 
   return (
     <div className="plansScreen">
+      {subscriptions && (
+        <p>
+          Renew Date:{" "}
+          {new Date(
+            subscriptions?.current_period_end * 1000
+          ).toLocaleDateString()}
+        </p>
+      )}
       {Object.entries(products).map(([productId, productData]) => {
         const isCurrentPackage = productData.name?.includes(
           subscriptions?.role
